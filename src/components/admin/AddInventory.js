@@ -13,9 +13,10 @@ const AddInventory = ({ addInventory }) => {
     const [movegroup, setMovegroup] = useState('');
     const [serveros, setServeros] = useState('');
     const [servertype, setServertype] = useState('');
+    const [GB, setGB] = useState('');
 
     const onSubmit = () => {
-        if(servername === '' || appname === '' || cutoverdate === '' || environment === '' || migrated === '' || movegroup === '' || serveros === '' || servertype === '') {
+        if(servername === '' || appname === '' || cutoverdate === '' || environment === '' || migrated === '' || movegroup === '' || serveros === '' || servertype === '' || GB === '') {
             M.toast({ html: 'Please enter a value'});
         } else {
             const newInventory = {
@@ -26,7 +27,8 @@ const AddInventory = ({ addInventory }) => {
                 migrated,
                 movegroup,
                 serveros,
-                servertype
+                servertype,
+                GB
             }
 
             // add Inventory
@@ -41,6 +43,7 @@ const AddInventory = ({ addInventory }) => {
             setMovegroup('');
             setServeros('');
             setServertype('');
+            setGB('');
         }
     }
 
@@ -139,6 +142,15 @@ const AddInventory = ({ addInventory }) => {
                     <label htmlFor="servertype" className="active">
                             Server Type
                     </label>
+                </div>
+
+                <div className="row">
+                    <div className="input-field">
+                        <input type="text" name="GB" value={GB} onChange={e => setGB(e.target.value)} />
+                        <label htmlFor="GB" className="active">
+                            Gigabytes (GB)
+                        </label>
+                    </div>
                 </div>
 
             </div>

@@ -13,22 +13,24 @@ const EditInventory = ({ current, updateInventory }) => {
     const [movegroup, setMovegroup] = useState('');
     const [serveros, setServeros] = useState('');
     const [servertype, setServertype] = useState('');
+    const [GB, setGB] = useState('');
 
     useEffect(() => {
         if(current){
             setServername(current.server_name);
             setAppname(current.app_name);
-            setCutoverdate(current.cutover_date)
-            setEnvironment(current.environment)
-            setMigrated(current.migrated)
-            setMovegroup(current.move_group)
-            setServeros(current.server_os)
-            setServertype(current.server_type)
+            setCutoverdate(current.cutover_date);
+            setEnvironment(current.environment);
+            setMigrated(current.migrated);
+            setMovegroup(current.move_group);
+            setServeros(current.server_os);
+            setServertype(current.server_type);
+            setGB(current.GB);
         }
     }, [current]);
 
     const onSubmit = () => {
-        if(servername === '' || appname === '' || cutoverdate === '' || environment === '' || migrated === '' || movegroup === '' || serveros === '' || servertype === '') {
+        if(servername === '' || appname === '' || cutoverdate === '' || environment === '' || migrated === '' || movegroup === '' || serveros === '' || servertype === '' || GB === '') {
             M.toast({ html: 'Please enter a value'});
         } else {
             const newInventory = {
@@ -39,10 +41,12 @@ const EditInventory = ({ current, updateInventory }) => {
                 migrated,
                 movegroup,
                 serveros,
-                servertype
+                servertype,
+                GB
             }
 
             // add Inventory
+            console.log(newInventory)
             updateInventory(newInventory);
 
             //reset fields
@@ -54,6 +58,7 @@ const EditInventory = ({ current, updateInventory }) => {
             setMovegroup('');
             setServeros('');
             setServertype('');
+            setGB('')
         }
     }
 
@@ -135,6 +140,15 @@ const EditInventory = ({ current, updateInventory }) => {
                     <label htmlFor="servertype" className="active">
                             Server Type
                     </label>
+                </div>
+
+                <div className="row">
+                    <div className="input-field">
+                        <input type="text" name="GB" value={GB} onChange={e => setGB(e.target.value)} />
+                        <label htmlFor="GB" className="active">
+                            Gigabytes (GB)
+                        </label>
+                    </div>
                 </div>
 
             </div>

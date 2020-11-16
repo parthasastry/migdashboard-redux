@@ -18,7 +18,6 @@ const Inventory = ({
     return <Preloader />;
   }
 
-
   const tableHeader = (
     <thead>
       <tr>
@@ -30,6 +29,7 @@ const Inventory = ({
         <th>Group</th>
         <th>OS</th>
         <th>Server Type</th>
+        <th>Gigabytes</th>
         <th>Action</th>
       </tr>
     </thead>
@@ -46,8 +46,11 @@ const Inventory = ({
         <td>{d.move_group}</td>
         <td>{d.server_os}</td>
         <td>{d.server_type}</td>
+        <td>{d.GB}</td>
         <td>
-          <a href="#add-inventory-modal" className="modal-trigger">
+          <a 
+            href="#add-inventory-modal" 
+            className="modal-trigger">
             <i className="material-icons">add</i>
           </a>
           <a
@@ -56,16 +59,12 @@ const Inventory = ({
           >
             <i className="material-icons">delete</i>
           </a>
-          <a href="#edit-inventory-modal" className="modal-trigger" onClick={() => setCurrent(d)}>
+          <a 
+            href="#edit-inventory-modal" 
+            className="modal-trigger" 
+            onClick={() => setCurrent(d)}>
             <i className="material-icons">edit</i>
           </a>
-          {/* <a
-            href="#edit-inventory-modal"
-            onClick={this.onEdit.bind(this, d)}
-            className="modal-trigger"
-          >
-            <i className="material-icons">edit</i>
-          </a> */}
         </td>
       </tr>
     );
@@ -84,10 +83,5 @@ const Inventory = ({
 const mapStateToProps = (state) => ({
   inventoryReducer: state.inventoryReducer,
 });
-
-const modalStyle = {
-  width: "75%",
-  height: "75%",
-};
 
 export default connect(mapStateToProps, { getInventory, deleteInventory, setCurrent })(Inventory);

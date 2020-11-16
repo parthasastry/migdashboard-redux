@@ -1,4 +1,4 @@
-import { GET_INVENTORY, SET_LOADING, SET_CURRENT, LOGS_ERROR, ADD_INVENTORY, UPDATE_INVENTORY, DELETE_INVENTORY } from './types';
+import { GET_INVENTORY, SET_LOADING, SET_CURRENT, LOGS_ERROR, ADD_INVENTORY, UPDATE_INVENTORY, DELETE_INVENTORY, GET_DASHBOARD_DATA, GET_APPS_DATA, GET_GB_DATA   } from './types';
 import axios from 'axios';
 
 // get all inventory items
@@ -105,5 +105,75 @@ export const setCurrent = (inventory) => {
 export const setLoading = () => {
     return {
         type: SET_LOADING
+    }
+}
+
+// get dashboard data
+export const getDashboardData = () => async dispatch => {
+    try {
+        setLoading();
+
+        const url = 'https://lpywo58r43.execute-api.us-east-1.amazonaws.com/dev/burndown'
+        let res = await axios.get(url);
+
+        let data = res.data
+        
+        dispatch({
+            type: GET_DASHBOARD_DATA,
+            payload: data
+        });
+
+    } catch(err) {
+        dispatch({
+            type: LOGS_ERROR,
+            payload: err.response.data
+        })
+    }
+}
+
+// get dashboard data
+export const getAppsData = () => async dispatch => {
+    try {
+        setLoading();
+
+        const url = 'https://lpywo58r43.execute-api.us-east-1.amazonaws.com/dev/apps'
+        let res = await axios.get(url);
+
+        let data = res.data
+        
+        dispatch({
+            type: GET_APPS_DATA,
+            payload: data
+        });
+
+    } catch(err) {
+        dispatch({
+            type: LOGS_ERROR,
+            payload: err.response.data
+        })
+    }
+}
+
+// get dashboard data
+export const getGBData = () => async dispatch => {
+    try {
+        setLoading();
+
+        const url = 'https://lpywo58r43.execute-api.us-east-1.amazonaws.com/dev/gb'
+        let res = await axios.get(url);
+
+        let data = res.data
+        console.log("Actions: GB data: ", res)
+        
+        dispatch({
+            type: GET_GB_DATA,
+            payload: data
+        });
+
+    } catch(err) {
+        dispatch({
+            type: LOGS_ERROR,
+            payload: err.response.data
+        })
     }
 }
