@@ -1,15 +1,24 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
+import InventoryItem from "./InventoryItem";
 
-import { getInventory, deleteInventory, setCurrent } from "../../actions/inventoryActions";
+import {
+  getInventory,
+  deleteInventory,
+  setCurrent,
+  getSearchResults,
+} from "../../actions/inventoryActions";
 import Preloader from "../layout/Preloader";
 
 const Inventory = ({
-  inventoryReducer: { inventory, loading },
+  inventoryReducer: { inventory, loading, searchResults },
   getInventory,
   deleteInventory,
-  setCurrent
+  setCurrent,
+  getSearchResults,
 }) => {
+  const [search, setSearch] = useState("");
+
   useEffect(() => {
     getInventory();
   }, []);
@@ -35,43 +44,67 @@ const Inventory = ({
     </thead>
   );
 
-  const tableData = inventory.map((d, i) => {
+  const tableData = searchResults.map((d, i) => {
     return (
-      <tr key={i}>
-        <td>{d.server_name}</td>
-        <td>{d.app_name}</td>
-        <td>{d.cutover_date}</td>
-        <td>{d.environment}</td>
-        <td>{d.migrated}</td>
-        <td>{d.move_group}</td>
-        <td>{d.server_os}</td>
-        <td>{d.server_type}</td>
-        <td>{d.GB}</td>
-        <td>
-          <a 
-            href="#add-inventory-modal" 
-            className="modal-trigger">
-            <i className="material-icons">add</i>
-          </a>
-          <a
-            href="#"
-            onClick={() => deleteInventory(d.server_name, d.app_name)}
-          >
-            <i className="material-icons">delete</i>
-          </a>
-          <a 
-            href="#edit-inventory-modal" 
-            className="modal-trigger" 
-            onClick={() => setCurrent(d)}>
-            <i className="material-icons">edit</i>
-          </a>
-        </td>
-      </tr>
+      <InventoryItem
+        key={i}
+        d={d}
+        i={i}
+        deleteInventory={deleteInventory}
+        setCurrent={setCurrent}
+      />
     );
   });
 
+  const onSubmit = (e) => {
+    e.preventDefault();
+    setSearch(search);
+    getSearchResults(inventory, search);
+    setSearch("");
+  };
+
   return (
     <div>
+      <br />
+      <div className="row center">
+        <div className="col s12 m6">
+          <div className="input-field">
+            <i className="material-icons prefix">search</i>
+            <input
+              type="text"
+              name="search"
+              value={search}
+              placeholder="enter search text"
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <label htmlFor="servername" className="active">
+              Enter Server or App name
+            </label>
+            <a
+              href="#"
+              onClick={onSubmit}
+              className="waves-effect waves-green btn"
+            >
+              Submit
+            </a>
+          </div>
+        </div>
+
+        <div className="col s12 m6">
+          <label>Add a new Configuration Item</label>
+          <br />
+          <br />
+          <a
+            href="#add-inventory-modal"
+            className="btn-floating btn-large modal-trigger"
+          >
+            <i className="large material-icons">add</i>
+          </a>
+        </div>
+      </div>
+
+      <hr />
+
       <table className="striped centered">
         {tableHeader}
         <tbody>{tableData}</tbody>
@@ -84,4 +117,9 @@ const mapStateToProps = (state) => ({
   inventoryReducer: state.inventoryReducer,
 });
 
-export default connect(mapStateToProps, { getInventory, deleteInventory, setCurrent })(Inventory);
+export default connect(mapStateToProps, {
+  getInventory,
+  deleteInventory,
+  setCurrent,
+  getSearchResults,
+})(Inventory);

@@ -9,10 +9,12 @@ import {
   GET_DASHBOARD_DATA,
   GET_APPS_DATA,
   GET_GB_DATA,
+  GET_SEARCH_RESULTS,
 } from "../actions/types";
 
 const initialState = {
   inventory: null,
+  searchResults: null,
   dashboard: null,
   apps: null,
   gb: null,
@@ -32,11 +34,13 @@ export default (state = initialState, action) => {
       return {
         ...state,
         current: action.payload,
+        loading: false
       };
     case GET_INVENTORY:
       return {
         ...state,
         inventory: action.payload,
+        searchResults: action.payload,
         loading: false,
       };
     case ADD_INVENTORY:
@@ -79,7 +83,16 @@ export default (state = initialState, action) => {
         gb: action.payload,
         loading: false,
       };
+    case GET_SEARCH_RESULTS:
+      return {
+        ...state,
+        searchResults: action.payload,
+        loading: false,
+      };
     default:
-      return state;
+      return {
+        ...state,
+        loading: false
+      };
   }
 };

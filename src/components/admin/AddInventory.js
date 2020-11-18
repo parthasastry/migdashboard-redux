@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import M from 'materialize-css/dist/js/materialize.min.js';
-import { addInventory } from '../../actions/inventoryActions';
+import { addInventory, getInventory } from '../../actions/inventoryActions';
 
-const AddInventory = ({ addInventory }) => {
+const AddInventory = ({ addInventory, getInventory }) => {
 
     const [servername, setServername] = useState('');
     const [appname, setAppname] = useState('');
@@ -167,4 +167,4 @@ const modalStyle = {
     height: '75%'
 }
 
-export default connect(null, { addInventory })(AddInventory);
+export default connect(null, { addInventory, getInventory })(AddInventory);

@@ -6,7 +6,7 @@ export class Navbar extends Component {
         return (
             <nav className="teal lighten-1">
                 <div className="nav-wrapper">
-                    <a href="#" className="brand-logo right">MyCloud</a>
+                    <a href="#" className="brand-logo right"> <i className="material-icons">dashboard</i>MyCloud</a>
                     <ul id="nav-mobile" className="left">
                         <li><Link to='/'>Home</Link></li>
                         <li><Link to='/dashboard'>Dashboard</Link></li>

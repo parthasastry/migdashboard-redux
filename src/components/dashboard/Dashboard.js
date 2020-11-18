@@ -19,7 +19,6 @@ const Dashboard = ({
     getDashboardData();
     getAppsData();
     getGBData();
-    console.log("GB data in dashboardL ", gb);
   }, []);
 
   if (loading || dashboard === null) {
@@ -39,16 +38,61 @@ const Dashboard = ({
     cumulative_servers_plan[cumulative_servers_plan.length - 1];
   // const servers_actual = Object.values(dashboard["Cum_Servers_Actual"]).reverse().find((s) => s != null);
 
-  const cum_apps_plan_data = Object.values(apps["Cum_Apps_Plan"]);
-  const apps_plan = cum_apps_plan_data[cum_apps_plan_data.length - 1];
+  // const cum_apps_plan_data = apps ? Object.values(apps["Cum_Apps_Plan"]) : [];
+  const apps_plan = appsDashboard(apps);
 
-  const cum_gb_plan_data = Object.values(gb["Cum_GB_Plan"]);
-  const gb_plan = cum_gb_plan_data[cum_gb_plan_data.length - 1] / 1000;
+  const gb_plan = gbDashboard(gb);
 
   return (
     <div>
       <div className="row center">
-        <div className="col s12 m9">
+        <div className="col s12 m4">
+          <div className="card blue-grey darken-1">
+            <div className="card-content white-text">
+              <span className="card-title">
+                <i className="material-icons large">computer</i>
+              </span>
+              <span>
+                {!loading && !servers_plan ? (
+                  <p>No data</p>
+                ) : (
+                  <h3>{servers_plan}</h3>
+                )}
+                <p>servers</p>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div className="col s12 m4">
+          <div className="card grey lighten-1">
+            <div className="card-content">
+              <span className="card-title">
+                <i className="material-icons large">apps</i>
+              </span>
+              <span>
+                {!loading && !apps_plan ? <p>No data</p> : <h3>{apps_plan}</h3>}
+                <p>apps</p>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div className="col s12 m4">
+          <div className="card blue-grey darken-1">
+            <div className="card-content white-text">
+              <span className="card-title">
+                <i className="material-icons large">storage</i>
+              </span>
+              <span>
+                {!loading && !gb_plan ? <p>No data</p> : <h3>{gb_plan} TB</h3>}
+                <p>storage</p>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="row center">
+        <div className="col s12 m6">
           <div className="card">
             <div className="card-content">
               <span className="card-title">Burnup</span>
@@ -64,55 +108,10 @@ const Dashboard = ({
             </div>
           </div>
         </div>
-        <div className="col s12 m3">
-          <div className="row center">
-            <div className="card blue-grey darken-1">
-              <div className="card-content white-text">
-                <span className="card-title">
-                  <i className="material-icons large">computer</i>
-                </span>
-                <span>
-                  <h3>{servers_plan}</h3>
-                  <p>servers</p>
-                </span>
-              </div>
-            </div>
-            </div>
-          <div className="row center">
-          <div className="card grey lighten-1">
-              <div className="card-content">
-                <span className="card-title">
-                  <i className="material-icons large">apps</i>
-                </span>
-                <span>
-                  <h3>{apps_plan}</h3>
-                  <p>apps</p>
-                </span>
-              </div>
-            </div>
-          </div >
-        </div>
-      </div>
-
-      <div className="row center">
-        <div className="col s12 m3">
-          <div className="card blue-grey darken-1">
-            <div className="card-content white-text">
-              <span className="card-title">
-                <i className="material-icons large">storage</i>
-              </span>
-              <span>
-                <h3>{gb_plan} TB</h3>
-                <p>storage</p>
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <div className="col s12 m9">
+        <div className="col s12 m6">
           <div className="card">
             <div className="card-content">
-              <span className="card-title">Burnup</span>
+              <span className="card-title">Schedule</span>
               {!loading && cutover_dates.length === 0 ? (
                 <p>No data</p>
               ) : (
@@ -128,6 +127,26 @@ const Dashboard = ({
       </div>
     </div>
   );
+};
+
+const gbDashboard = (gb) => {
+  if (gb) {
+    const cum_gb_plan_data = Object.values(gb["Cum_GB_Plan"]);
+    const gb_plan = cum_gb_plan_data[cum_gb_plan_data.length - 1] / 1000;
+    return gb_plan;
+  } else {
+    return 0;
+  }
+};
+
+const appsDashboard = (apps) => {
+  if (apps) {
+    const cum_apps_plan_data = apps ? Object.values(apps["Cum_Apps_Plan"]) : [];
+    const apps_plan = cum_apps_plan_data[cum_apps_plan_data.length - 1];
+    return apps_plan;
+  } else {
+    return 0;
+  }
 };
 
 const mapStateToProps = (state) => ({

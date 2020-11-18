@@ -1,4 +1,4 @@
-import { GET_INVENTORY, SET_LOADING, SET_CURRENT, LOGS_ERROR, ADD_INVENTORY, UPDATE_INVENTORY, DELETE_INVENTORY, GET_DASHBOARD_DATA, GET_APPS_DATA, GET_GB_DATA   } from './types';
+import { GET_INVENTORY, SET_LOADING, SET_CURRENT, LOGS_ERROR, ADD_INVENTORY, UPDATE_INVENTORY, DELETE_INVENTORY, GET_DASHBOARD_DATA, GET_APPS_DATA, GET_GB_DATA, GET_SEARCH_RESULTS   } from './types';
 import axios from 'axios';
 
 // get all inventory items
@@ -8,11 +8,32 @@ export const getInventory = () => async dispatch => {
 
         const url = 'https://lpywo58r43.execute-api.us-east-1.amazonaws.com/dev/inventory'
         let res = await axios.get(url);
-        console.log(res.data)
+
         let data = res.data;
         
         dispatch({
             type: GET_INVENTORY,
+            payload: data
+        });
+
+    } catch(err) {
+        dispatch({
+            type: LOGS_ERROR,
+            payload: err.response.data
+        })
+    }
+}
+
+//Searh Results
+export const getSearchResults = (inventory, searchText) => async dispatch => {
+    try {
+        setLoading();
+
+        let search = searchText.toLowerCase();
+        const data = inventory.filter(d => d.server_name.toLowerCase().includes(searchText) || d.app_name.toLowerCase().includes(searchText));
+        
+        dispatch({
+            type: GET_SEARCH_RESULTS,
             payload: data
         });
 
@@ -163,7 +184,6 @@ export const getGBData = () => async dispatch => {
         let res = await axios.get(url);
 
         let data = res.data
-        console.log("Actions: GB data: ", res)
         
         dispatch({
             type: GET_GB_DATA,
