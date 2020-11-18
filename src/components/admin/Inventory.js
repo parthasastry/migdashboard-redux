@@ -18,14 +18,41 @@ const Inventory = ({
   getSearchResults,
 }) => {
   const [search, setSearch] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [resultsPerPage] = useState(15);
 
   useEffect(() => {
     getInventory();
+    
   }, []);
 
   if (loading || inventory === null) {
     return <Preloader />;
   }
+
+  const indexOfLastResult = currentPage * resultsPerPage;
+  const indexOfFirstResult = indexOfLastResult - resultsPerPage;
+  let currentResults = searchResults.slice(indexOfFirstResult, indexOfLastResult)
+
+  const pages = []
+  for (let i = 1; i <= Math.ceil(searchResults.length / resultsPerPage); i++) {
+      pages.push(i);
+  }
+
+  const pagination =  <ul className="pagination">
+  <li className="disabled"><a href="#!"><i className="material-icons">chevron_left</i></a></li>
+  {pages.map(number => {
+      const className = number === currentPage ? "waves-effect active" : "waves-effect"
+      return (
+          <li 
+              key={number} 
+              className={className}
+          >
+              <a onClick={() => setCurrentPage(number)} href="#!">{number}</a>
+          </li>)
+  })}
+  <li className="waves-effect"><a href="#!"><i className="material-icons">chevron_right</i></a></li>
+</ul>
 
   const tableHeader = (
     <thead>
@@ -44,7 +71,8 @@ const Inventory = ({
     </thead>
   );
 
-  const tableData = searchResults.map((d, i) => {
+  // const tableData = searchResults.map((d, i) => {
+  const tableData = currentResults.map((d, i) => {
     return (
       <InventoryItem
         key={i}
@@ -60,6 +88,7 @@ const Inventory = ({
     e.preventDefault();
     setSearch(search);
     getSearchResults(inventory, search);
+    console.log("fetching search results for ", search)
     setSearch("");
   };
 
@@ -109,6 +138,8 @@ const Inventory = ({
         {tableHeader}
         <tbody>{tableData}</tbody>
       </table>
+
+      {pagination}
     </div>
   );
 };
