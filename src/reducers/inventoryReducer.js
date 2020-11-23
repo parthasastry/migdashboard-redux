@@ -14,7 +14,6 @@ import {
 
 const initialState = {
   inventory: null,
-  searchResults: null,
   dashboard: null,
   apps: null,
   gb: null,
@@ -40,7 +39,6 @@ export default (state = initialState, action) => {
       return {
         ...state,
         inventory: action.payload,
-        searchResults: action.payload,
         loading: false,
       };
     case ADD_INVENTORY:

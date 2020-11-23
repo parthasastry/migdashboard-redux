@@ -5,17 +5,15 @@ import InventoryItem from "./InventoryItem";
 import {
   getInventory,
   deleteInventory,
-  setCurrent,
-  getSearchResults,
+  setCurrent
 } from "../../actions/inventoryActions";
 import Preloader from "../layout/Preloader";
 
 const Inventory = ({
-  inventoryReducer: { inventory, loading, searchResults },
+  inventoryReducer: { inventory, loading },
   getInventory,
   deleteInventory,
   setCurrent,
-  getSearchResults,
 }) => {
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -32,10 +30,10 @@ const Inventory = ({
 
   const indexOfLastResult = currentPage * resultsPerPage;
   const indexOfFirstResult = indexOfLastResult - resultsPerPage;
-  let currentResults = searchResults.slice(indexOfFirstResult, indexOfLastResult)
+  let currentResults = inventory.slice(indexOfFirstResult, indexOfLastResult)
 
   const pages = []
-  for (let i = 1; i <= Math.ceil(searchResults.length / resultsPerPage); i++) {
+  for (let i = 1; i <= Math.ceil(inventory.length / resultsPerPage); i++) {
       pages.push(i);
   }
 
@@ -79,6 +77,7 @@ const Inventory = ({
         d={d}
         i={i}
         deleteInventory={deleteInventory}
+        getInventory={getInventory}
         setCurrent={setCurrent}
       />
     );
@@ -87,7 +86,8 @@ const Inventory = ({
   const onSubmit = (e) => {
     e.preventDefault();
     setSearch(search);
-    getSearchResults(inventory, search);
+    getInventory(search)
+    //getSearchResults(inventory, search);
     console.log("fetching search results for ", search)
     setSearch("");
   };
@@ -151,6 +151,5 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
   getInventory,
   deleteInventory,
-  setCurrent,
-  getSearchResults,
+  setCurrent
 })(Inventory);

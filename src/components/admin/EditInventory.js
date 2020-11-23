@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import M from 'materialize-css/dist/js/materialize.min.js';
-import { updateInventory } from '../../actions/inventoryActions';
+import { updateInventory, getInventory } from '../../actions/inventoryActions';
 
-const EditInventory = ({ current, updateInventory }) => {
+const EditInventory = ({ current, updateInventory, getInventory }) => {
 
     const [servername, setServername] = useState('');
     const [appname, setAppname] = useState('');
@@ -48,6 +48,8 @@ const EditInventory = ({ current, updateInventory }) => {
             // add Inventory
             console.log(newInventory)
             updateInventory(newInventory);
+
+            getInventory();
 
             //reset fields
             setServername('');
@@ -169,4 +171,4 @@ const modalStyle = {
     height: '75%'
 }
 
-export default connect(mapStateToProps, { updateInventory })(EditInventory);
+export default connect(mapStateToProps, { updateInventory, getInventory })(EditInventory);

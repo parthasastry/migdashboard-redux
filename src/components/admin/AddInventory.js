@@ -34,6 +34,8 @@ const AddInventory = ({ addInventory, getInventory }) => {
             // add Inventory
             addInventory(newInventory);
 
+            getInventory();
+            
             //reset fields
             setServername('');
             setAppname('');

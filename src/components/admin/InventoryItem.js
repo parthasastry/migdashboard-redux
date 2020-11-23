@@ -1,13 +1,19 @@
 import React, { Component } from "react";
+import { getInventory } from "../../actions/inventoryActions";
 
 export class InventoryItem extends Component {
     constructor(props) {
         super(props)
     }
 
+  onDelete = () => {
+    this.props.deleteInventory(this.props.d.server_name, this.props.d.app_name);
+    this.props.getInventory();
+  }
+
   render() {
 
-    const { d, i, deleteInventory, setCurrent } = this.props
+    const { d, i, setCurrent } = this.props
     return (
       <tr key={i}>
         <td>{d.server_name}</td>
@@ -25,7 +31,8 @@ export class InventoryItem extends Component {
           </a> */}
           <a
             href="#"
-            onClick={() => deleteInventory(d.server_name, d.app_name)}
+            // onClick={() => deleteInventory(d.server_name, d.app_name)}
+            onClick={this.onDelete}
           >
             <i className="material-icons">delete</i>
           </a>

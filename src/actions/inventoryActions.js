@@ -2,7 +2,7 @@ import { GET_INVENTORY, SET_LOADING, SET_CURRENT, LOGS_ERROR, ADD_INVENTORY, UPD
 import axios from 'axios';
 
 // get all inventory items
-export const getInventory = () => async dispatch => {
+export const getInventory = (searchText='') => async dispatch => {
     try {
         setLoading();
 
@@ -10,6 +10,11 @@ export const getInventory = () => async dispatch => {
         let res = await axios.get(url);
 
         let data = res.data;
+
+        if(searchText){
+            let search = searchText.toLowerCase();
+            data = data.filter(d => d.server_name.toLowerCase().includes(search) || d.app_name.toLowerCase().includes(search));
+        }
         
         dispatch({
             type: GET_INVENTORY,
@@ -30,7 +35,7 @@ export const getSearchResults = (inventory, searchText) => async dispatch => {
         setLoading();
 
         let search = searchText.toLowerCase();
-        const data = inventory.filter(d => d.server_name.toLowerCase().includes(searchText) || d.app_name.toLowerCase().includes(searchText));
+        const data = inventory.filter(d => d.server_name.toLowerCase().includes(search) || d.app_name.toLowerCase().includes(search));
         
         dispatch({
             type: GET_SEARCH_RESULTS,
