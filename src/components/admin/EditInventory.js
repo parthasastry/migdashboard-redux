@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import M from 'materialize-css/dist/js/materialize.min.js';
 import { updateInventory, getInventory } from '../../actions/inventoryActions';
+import { ref_environments, ref_movegroups, ref_os, ref_servertypes } from '../../data/referenceData';
 
 const EditInventory = ({ current, updateInventory, getInventory }) => {
 
@@ -64,6 +65,11 @@ const EditInventory = ({ current, updateInventory, getInventory }) => {
         }
     }
 
+    const environment_options = ref_environments.map(e => <option value={e}>{e}</option>)
+    const movegroup_options = ref_movegroups.map(e => <option value={e}>{e}</option>)
+    const os_options = ref_os.map(e => <option value={e}>{e}</option>)
+    const servertype_options = ref_servertypes.map(e => <option value={e}>{e}</option>)
+
     return (
         <div id='edit-inventory-modal' className="modal" style={modalStyle}>
             <div className="modal-content">
@@ -81,10 +87,11 @@ const EditInventory = ({ current, updateInventory, getInventory }) => {
                 <div className="row">
                     <select className="browser-default" name="environment" value={environment} onChange={e => setEnvironment(e.target.value)}>
                         <option value="" disabled defaultValue>Choose environment</option>
-                        <option value="DEV">DEV</option>
+                        {/* <option value="DEV">DEV</option>
                         <option value="QA">QA</option>
                         <option value="STAGE">STAGE</option>
-                        <option value="PROD">PROD</option>
+                        <option value="PROD">PROD</option> */}
+                        {environment_options}
                     </select>
                     <label htmlFor="environment" className="active">
                             Environment
@@ -105,10 +112,11 @@ const EditInventory = ({ current, updateInventory, getInventory }) => {
                 <div className="row">
                     <select className="browser-default" name="movegroup" value={movegroup} onChange={e => setMovegroup(e.target.value)}>
                         <option value="" disabled defaultValue>Choose an option</option>
-                        <option value="Group 1">Group 1</option>
+                        {/* <option value="Group 1">Group 1</option>
                         <option value="Group 2">Group 2</option>
                         <option value="Group 3">Group 3</option>
-                        <option value="Group 4">Group 4</option>
+                        <option value="Group 4">Group 4</option> */}
+                        {movegroup_options}
                     </select>
                     <label htmlFor="movegroup" className="active">
                             Move Group
@@ -118,12 +126,13 @@ const EditInventory = ({ current, updateInventory, getInventory }) => {
                 <div className="row">
                     <select className="browser-default" name="serveros" value={serveros} onChange={e => setServeros(e.target.value)}>
                         <option value="" disabled defaultValue>Choose an option</option>
-                        <option value="Windows 2008">Windows 2008</option>
+                        {/* <option value="Windows 2008">Windows 2008</option>
                         <option value="Windows 2012">Windows 2012</option>
                         <option value="Windows 2016">Windows 2016</option>
                         <option value="RHEL">RHEL</option>
                         <option value="CentOS">CentOS</option>
-                        <option value="Ubuntu">Ubuntu</option>
+                        <option value="Ubuntu">Ubuntu</option> */}
+                        {os_options}
                     </select>
                     <label htmlFor="OS" className="active">
                             Operating System
@@ -133,11 +142,12 @@ const EditInventory = ({ current, updateInventory, getInventory }) => {
                 <div className="row">
                     <select className="browser-default" name="servertype" value={servertype} onChange={e => setServertype(e.target.value)}>
                         <option value="" disabled defaultValue>Choose an option</option>
-                        <option value="Application Server">Application Server</option>
+                        {/* <option value="Application Server">Application Server</option>
                         <option value="Web Server">Web Server</option>
                         <option value="Database Server">Database Server</option>
                         <option value="FTP Server">FTP Server</option>
-                        <option value="File Server">File Server</option>
+                        <option value="File Server">File Server</option> */}
+                        {servertype_options}
                     </select>
                     <label htmlFor="servertype" className="active">
                             Server Type
